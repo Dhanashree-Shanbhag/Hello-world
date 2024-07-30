@@ -1,0 +1,100 @@
+Types of build triggers
+1]Poll SCM, after a regular interval, Jenkins will poll the GitHub repo to see if there is any change.
+If yes then only it will trigger the build else it will not.
+we need to mention the public repo and branch name
+
+2]Build periodically,
+Based on the cron expression, Jenkins will trigger the build.
+
+3]GitHub hook trigger for Gitscm polling.
+This is a push based event.
+We need to add a web hook url which would be jenkins-url/github-webhook/
+API will be post with payload as application/json.
+
+For the webhook, port TCP 8080 should be open for the GitHub IP, along with our IP address
+As soon we make changes in any file in the repository and commit, the webhook will push the event to Jenkins and will trigger the build
+In the webhook configuration, we can add on which event we want to have the hook trigger, eg on pushes, pull requests, repositories, branch created
+
+4]Build the pipeline after other projects are build
+These can be multiple projects. We can add configuration, if the build is stable, unstable
+
+There is no database where Jenkins stores data, all the data basically is stored as files on ec2 itself
+If we type /config.xml we can see the job data is stored as an xml file on the ec2
+There is a jobs directory under Jenkins home directory /var/lib/Jenkins
+Under jobs there are your configured job folder like build-java-demo inside that there would be config.xml
+
+The problem is it can be deleted and the whole job would be gone. Hence the freestyle project is not preferred
+
+General Info: If agents are not mentioned, the Jenkins has its own algo to run the job
+
+Pipeline project gives you the flexibility in terms of configuration
+Create new pipeline.
+
+Instead of build there would be pipeline section.
+Pipeline script can be maintained in SCM
+It has stages which has several stage. Each stage has no of steps.
+We can rerun and debug at individual stage level. This flexibility is present in pipeline project
+
+Pipeline code can be referred from pipeline syntax and globals with global keywords
+
+https://www.jenkins.io/doc/book/pipeline/jenkinsfile/ - Jenkins documentation
+
+For Pipeline syntax
+http://44.203.54.71:8080/job/build-java-pipeline/pipeline-syntax/
+
+Eg of pipeline code
+pipeline {
+	agent any
+	stages {
+		stage('Checkout Source') {
+			steps {
+				git branch: 'main', url: 'dkjdsk'
+			      }
+		}
+		stage('Compile') {
+			steps {
+				sh 'javac HelloWorld.java'
+			      }
+		}
+	}
+}
+
+Pipeline project are of two types.
+1]Scripted pipeline where we add pipeline code in the UI. This provides more option than freestyle project but still is saved as xml file which can get lost.
+pipeline {
+    
+    agent any
+    
+    stages {
+        stage('Checkout Source') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Dhanashree-Shanbhag/Hello-world.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'javac HelloWorld.java'
+            }
+        }
+        stage('Run') {
+            steps {
+                sh 'java HelloWorld'
+                }
+            }
+        }
+} 
+
+2]Scripted pipeline with SCM provides you Jenkinsfile which we can add in the source control management.
+Git url should be the repo url where jenkinsfile is present
+It has an option of light weight checkout. Usually when the checkout happens, it checks out all the files in the repo but in case of lightweight checkout, initially
+it will check out only the Jenkinsfile and if there are other files referred in jenkinsFile it will download those files
+
+Multi branch pipeline
+
+Usually we create a feature branch from the main branch, code in feature branch, after successful testing push the changes to main branch.
+In this case, we want to run the pipeline for two different branches separately in a single run without conflicting each other.
+Main branch will refer its specific jenkinsfile
+test-branch will refer its specific jenkinsfile
+
+Add source as git, git repo url, add filters wildcards, by default choses all files
+

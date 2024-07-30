@@ -1,0 +1,54 @@
+Organize jobs inside views or folders
+
+Global security
+From plugin installed role based auth strategy then only you will see the option enable project level security after plugin installation, go to security and select project role based in    Authorization. Global access(we can create new users and provide then the overall access). we can apply access to project level as well for a specific job and specific user
+eg Juser will have build and read access for a specific job but not configure
+
+Create user, provide read permission at global scale
+go the specific job enable project level security. add user and provide access as build and read. This is how to enable user access for specific job
+
+Home directory of Jenkins will be visible under system
+/var/lib/Jenkins
+
+zfml mlkf jypm qdon
+
+Email configuration steps
+https://medium.com/@madhan97.sms/a-step-by-step-guide-to-configuring-smtp-in-jenkins-with-gmail-ea79eb3aaefc#:~:text=3.2.,-SMTP%20Server%20Configuration&text=%2D%20SMTP%20Server%3A%20Enter%20%E2%80%9Csmtp,configure%20other%20settings%20as%20needed.
+
+You need email extension plugin 
+
+Plugin
+Deliver Pipeline
+fancy UI to see the status of build
+
+To show correct timezone, go to username and configure time zone
+
+default content
+${SCRIPT, template="custom-html.template"}
+
+default content type - html
+
+create a folder in Jenkins home directory and save the file custom-html.template in that folder. you need to provide permissions for this sudo chown ec2-user:ec2-user /var/lib/Jenkins
+
+chmod 777 .
+
+choose always in default triggers
+
+For email go to manage Jenkins, system, extended email section add user name as email id and password as app specific 16th digit password
+gmail.smtp.server port 465 also configure the same thing in email notification section and save
+
+In the current freestyle job, add post build action to trigger email
+
+Create a GitHub account, public repo and hello world file in that repo
+Install git plugin in Jenkins, install git on EC2
+
+Create a new freeStyle project called build-demo-java, copy the url of your public git hub repo to the git url, since its a public repo credentials are not required
+execute a shell script to compile and run the java code from the public repo. You can post build action to send email
+so this project basically reads the file from source control public git repo and executes that program. after successful execution send the email notif
+For this Ec2 needs to have javac, jre and git
+
+Build Triggers as Poll SCM
+we need to add cron expression to build periodically at regular intervals.
+The Jenkins will poll source code management in our case it is Jenkins to see if there is any change(any file change) in repo. If yes it will run the build automatically after the cron expression
+If there is no change there will be no build. This is how when the developers check in the code in SCM, the build auto triggers.
+Because of polling, there is concept of continuous integration

@@ -1,0 +1,57 @@
+Intro
+Jenkins is web based CI/CD tool. 
+Built using java
+open source 
+free
+plugin based. hence extensible(Needs to maintain the plugin)
+some times the plugins go deprecated if not maintained or secured
+
+CI/CD - features quickly rolled out in prod live env
+seamless integration
+dev commits code - code build generate artifact - qa testing - sign off - prod
+
+Features
+-Full automation of CI/CD
+-scheduled jobs
+-job level security
+-configure email notifications
+-Integrates with SVN/GIT
+-Master/slave configuration 
+
+Free Style Jobs
+This project is parameterized checkbox
+Need to install active choice plugin
+active parameter - country single choice radio
+active choice reactive parameter - state
+Add active choice parameter, reactive parameter, approve the groovy script in manage Jenkins, security, approval
+
+Jenkins is distributed Controller - agent to offload the load on agent server
+
+Integrates with source control like GitHub, svn
+
+Options for build triggers
+Build job after other project build
+Build job after other project build is success
+Build job periodically using cron
+
+Build environment
+The first step is to download the source code from the source control and download the files
+in one directory in order to compile.
+Every time the build runs, the files will be overwritten hence to solve the issues if the files are latest, the best approach is to delete the exiting source files in directory and fresh download on every build.
+Enable option Delete workspace before the build starts
+
+Post Build actions
+Archive the artifacts to deploy the jar or war
+you can run or build other projects
+
+some of the plugins dont come into effect still restart
+8080/restart
+8080/saferestart - graceful wait when the jobs are running, they will allow to complete before restart and will not allow new job
+
+Throttle builds
+server will get chocked
+set like 1 build in one min eg
+
+	
+
+
