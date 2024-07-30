@@ -1,0 +1,38 @@
+In the free style jobs, we don't have the flexibility to reuse the code.
+For eg. If we want to send email for multiple jobs in a similar way we will have to configure post build action to send an email in individual jobs.
+
+This can be solved in the pipeline project with the help of Jenkins shared library
+Should create a vars folder under the repository and files that has call method. The name of the files will be same as the method used in the pipeline code
+Eg. printMsg, sendEmail etc. These methods should be called from the post function in the pipeline code. The post block will run once the build for the job is successful.
+You can run the code on successfulInvocation with success block and always that is finally type of code in always block
+
+Jenkins Shared librabry config should be done on Manage Jenkins, add the git repo that has Jenkins shared library files Global Trusted Pipeline Libraries
+
+Load Implicitly
+we dont need to add the annotation @Library
+
+Limitations Of Jenkins
+1]It is plugin based
+2]It has only one controller hence cant be run in HA
+3]No database but has XML files as config
+4]Steep learning curve of Groovy for pipelines
+
+Best Practices
+Use agents for builds and not the master
+use global environment variables
+Do not use plain text passwords. Use credentials or Masked passwords
+
+We can user defined env variables(if we need same variables across different jobs rather than creating duplicate variables)
+You can create credentials and use then in pipeline or free style job. The password will never be displayed in plain text. It will always be masked
+
+There is workspace for each jobs created in home/Jenkins folder where you can get the files in zip format after the build is completed. we dont need to connect to server (ssh it) 
+to view the files
+
+As a best practice we should not install run time in agents, Simply install docker and user images to download the required runtimes and their specific version
+
+we can set the build number using the on script console
+
+We can install specific tools like git, maven from the tools section of manage Jenkins
+
+system info has information eg java home path, java version, env, Jenkins home, plugins available, memory usage, thread usage
+system log has logs related to Jenkins. You don't have to connect to server to see the logs for errors.
